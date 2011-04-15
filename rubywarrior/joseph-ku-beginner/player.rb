@@ -12,18 +12,31 @@ class Player
       if warrior.health < @health
         warrior.health > 7 ? warrior.walk! : warrior.walk!(:backward) # Magic number 7!
       elsif warrior.health < 20
-        warrior.rest!
+        warrior.rest! 
+      elsif shoot?(warrior)
+        warrior.shoot!
       else
         warrior.walk!(@direction)
       end
     else
       if warrior.feel(@direction).captive?
         warrior.rescue!(@direction)
-        @captive_rescued = true
       else
         warrior.attack!(@direction)
       end
     end
     @health = warrior.health
+  end
+
+  def shoot?(warrior)
+    warrior.look(@direction).each do |s|
+      case s.to_s
+      when "Captive"
+        return false
+      when "Wizard"
+        return true
+      end
+    end
+    return false
   end
 end
