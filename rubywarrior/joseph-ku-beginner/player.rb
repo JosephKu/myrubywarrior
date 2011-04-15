@@ -9,12 +9,12 @@ class Player
     end
 
     if warrior.feel(@direction).empty?
-      if warrior.health < @health
+      if shoot?(warrior)
+        warrior.shoot!
+      elsif warrior.health < @health
         warrior.health > 7 ? warrior.walk! : warrior.walk!(:backward) # Magic number 7!
       elsif warrior.health < 20
         warrior.rest! 
-      elsif shoot?(warrior)
-        warrior.shoot!
       else
         warrior.walk!(@direction)
       end
